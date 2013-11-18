@@ -1,0 +1,23 @@
+.fixed
+  nav.top-bar
+    ul.title-area
+      li.name
+        h1: a(href="/") Pong 2.0
+      li.toggle-topbar.menu-icon
+        a(href="#")
+          span Menu
+
+    section.top-bar-section
+      ul.left
+        //- li.divider
+        //- li: a(href='#') One
+        //- li.divider
+        //- li: a(href='#') Two
+        //- li.divider
+        //- li: a(href='#') Three
+      ul.right
+        li.divider
+        if user
+          li.has-form: a#authenticationButton.button.alert.radius(href="#", data-email= user.email)= user.email
+        else
+          li.has-form: a#authenticationButton.button.radius(href="#") Login | Sign Up
