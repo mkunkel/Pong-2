@@ -17,7 +17,7 @@
         //- li: a(href='#') Three
       ul.right
         li.divider
-        if user
-          li.has-form: a#authenticationButton.button.alert.radius(href="#", data-email= user.email)= user.email
+        if player
+          li.has-form: a#authenticationButton.button.alert.radius(href="#", data-name= player.name)= player.name
         else
           li.has-form: a#authenticationButton.button.radius(href="#") Login | Sign Up

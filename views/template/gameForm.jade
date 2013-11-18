@@ -2,11 +2,11 @@ form#gameForm.hidden(action='/', method='POST')
   fieldset
     legend New Game
     .row
-      mixin field(6, 'text', 'email', 'Email')
+      mixin field(6, 'text', 'name', 'Name')
       mixin field(6, 'password', 'password', 'Password')
     .row
       .small-6.columns
-        #err
+        #err= ' '
       .small-3.columns
         button.radius.tiny.expand#login Log In
       .small-3.small-offset-6.columns

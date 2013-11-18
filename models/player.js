@@ -1,14 +1,17 @@
 var mongoose = require('mongoose');
 var __ = require('lodash');
+var uniqueValidator = require('mongoose-unique-validator');
 
 function randomize() {
   return __.sample(__.range(10));
 }
 
 var Player = mongoose.Schema({
-  name:      String,
+  name:      {type: String, required: true, unique: true},
+  password:  {type: String, required: true},
   socketId:  String,
   createdAt: {type: Date, default: Date.now}
 });
 
+Player.plugin(uniqueValidator);
 mongoose.model('Player', Player);

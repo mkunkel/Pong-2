@@ -18,7 +18,8 @@
     "socket.io": "*",
     "connect-redis": "*",
     "require-dir": "*",
-    "bcrypt": "*"
+    "bcrypt": "*",
+    "mongoose-unique-validator": "~0.2.0"
   },
   "devDependencies": {
     "grunt": "*",
