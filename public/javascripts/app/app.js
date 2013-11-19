@@ -40,8 +40,9 @@ var GameFactory = function() {
       // reset circle to [0,0,40] .. or whatever the default is
       // set score to zero, whatever else you need to do
       // Update stage will render next frame
-      createjs.Ticker.addEventListener('tick', self.update);
-      stage.update();
+      // createjs.Ticker.addEventListener('tick', self.update);
+      // stage.update();
+      // socket.emit('')
     }, //end of start()
 
       //handle your keypress!
@@ -57,8 +58,14 @@ var GameFactory = function() {
     },
     'keyUp' : function(e) {
       leftVelocity = 0;
+      console.log(leftPaddle);
     },
     'update' : function() {
+      if (leftVelocity < 0 && leftPaddle.y <= 0) {
+        leftVelocity = 0;
+      } else if (leftVelocity > 0 && leftPaddle.y + leftPaddle.height >= $('#gameCanvas').attr('height')) {
+        leftVelocity = 0;
+      }
       leftPaddle.y += leftVelocity;
       stage.update();
     }
@@ -71,18 +78,13 @@ var GameFactory = function() {
 
 
 function initialize(){
-
   $(document).foundation();
   initializeSocketIO();
   $('#authenticationButton').on('click', clickAuth);
   $('#login').on('click', clickLogin);
   $('#register').on('click', clickRegister);
+  if ($('#authenticationButton').hasClass('alert')) {player = $('#authenticationButton').text();}
 
-  //get our game obj
-  var game = GameFactory();
-  game.init('gameCanvas');
-  //set up callbacks related to the game
-  $('#gameStartButton').on('click', game.start);
   $('body').on('keydown', game.keyDown);
   $('*').on('keyup', game.keyUp);
 }
@@ -145,16 +147,42 @@ function redirect() {
   window.location.href = '/';
 }
 
+function submitGame(e){
+  var gameName = $('#newGameForm input[name=game]').val();
+  socket.emit('startgame', {game:gameName, player:player});
+  e.preventDefault();
+}
+
 function initializeSocketIO(){
   var port = window.location.port ? window.location.port : '80';
   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
 
   socket = io.connect(url);
   socket.on('connected', socketConnected);
-  // socket.on('playerjoined', socketPlayerJoined);
+
+  //get our game obj
+  var game = GameFactory();
+  game.init('gameCanvas');
+  //set up callbacks related to the game
+  $('#startGame').on('click', submitGame);
+
+  socket.on('playerjoined', socketPlayerJoined);
 
 }
+
+
+function socketPlayerJoined(data) {
+  if (data.players.length === 1) {
+    console.log('waiting on a second player');
+  } else {
+    console.log(data.players);
+  }
+
+}
+
+
 
 function socketConnected(data){
   console.log(data);
 }
+

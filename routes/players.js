@@ -6,7 +6,7 @@ var Player = mongoose.model('Player');
 // GET /
 exports.create = function(req, res){
   console.log('players.create'.italic.underline.bold.magenta);
-  console.log(req.body);
+  // console.log(req.body);
   var player = new Player();
   player.name = req.body.name;
   bcrypt.hash(req.body.password, 10, function(err, hash) {
@@ -25,7 +25,7 @@ exports.create = function(req, res){
 //PUT /login
 exports.login = function(req, res){
   console.log('players.login'.italic.underline.bold.magenta);
-  console.log(req.body);
+  // console.log(req.body);
   var name = req.body.name;
   Player.findOne({name: name}, function(err, player){
     if (player) {

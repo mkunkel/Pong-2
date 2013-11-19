@@ -1,0 +1,11 @@
+form#NewgameForm(action='/', method='POST')
+  fieldset
+    legend New Game
+    .row
+      .small-6.columns
+      mixin field(6, 'text', 'game', 'Game')
+    .row
+      .small-6.columns
+        #err= ' '
+      .small-3.small-offset-3.columns
+        button.radius.tiny.expand#startGame Start Game
