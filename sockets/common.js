@@ -12,7 +12,7 @@ exports.connection = function(socket){
   socket.on('disconnect', socketDisconnect);
   socket.on('startgame', socketStartGame);
 
-  socket.on('movePaddle', socketMovePaddle);
+  socket.on('movepaddle', socketMovePaddle);
 };
 
 function socketStartGame(data){
@@ -29,19 +29,17 @@ function socketStartGame(data){
     function(fn){fn(null,__.any(storage.game.players,function(p){return p.id===storage.player.id;}));},
     function(isFound,fn){if(!isFound){m.attachPlayer(storage.game,storage.player,fn);}else{fn(null,storage.game);}},
     function(game,fn){m.findGame(data.game,fn);},
-    // function(game,fn){if(game.players.length===2){timer=setInterval(function(){m.emitGame(io.sockets,game,fn);}, 100);}else{fn(game,fn);}},
-    function(game,fn){m.emitPlayers(io.sockets,game.players,fn);}
+    function(game,fn){if(game.players.length===2){timer = setInterval(function(){m.emitGame(io.sockets,game);}, 100);fn(null, game);}else{fn(null, game);}},
+    function(game,fn){m.emitPlayers(io.sockets,game,fn);}
   ]);
 }
 
 function socketMovePaddle(data) {
   var storage = {};
   var socket = this;
-
   async.waterfall([
     function(fn){m.findGame(data.game,fn);},
-    function(game,fn){storage.game=game;fn();},
-    function(fn){m.updatePaddles(storage.game, data.paddleLeft, data.paddleRight, fn);}
+    function(game,fn){m.updatePaddles(game, data.l, data.r, fn);}
   ]);
 }
 

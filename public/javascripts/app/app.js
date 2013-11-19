@@ -11,9 +11,15 @@ var game;
 
 var GameFactory = function() {
   var stage = {};
+  var paddleWidth = 25;
   var leftPaddle = {};
   var leftY = 0;
   var leftVelocity = 0;
+  var rightPaddle = {};
+  var rightY = 0;
+  var rightX = parseInt($('#gameCanvas').attr('width'), 10) - paddleWidth;
+  var rightVelocity = 0;
+
 
   var circle = {};
   //Create the game object to be initialized and returned
@@ -27,11 +33,13 @@ var GameFactory = function() {
       circle = new createjs.Shape();
       circle.graphics.beginFill('red').drawCircle(0, 0, 10);
       leftPaddle = new createjs.Shape();
-      leftPaddle.graphics.beginFill('blue').drawRect(0, leftY, 25, 100);
+      leftPaddle.graphics.beginFill('blue').drawRect(0, leftY, paddleWidth, 100);
+      rightPaddle = new createjs.Shape();
+      rightPaddle.graphics.beginFill('blue').drawRect(rightX, rightY, paddleWidth, 100);
       //Set position of Shape instance.
       circle.x = circle.y = 50;
        //Add Shape instance to stage display list.
-      stage.addChild(circle, leftPaddle);
+      stage.addChild(circle, leftPaddle, rightPaddle);
       stage.update();
     },
 
@@ -50,23 +58,31 @@ var GameFactory = function() {
       //handle your keypress here
       switch (e.which) {
         case 38: // UP
-          leftVelocity = -5;
+          if(leftVelocity !== -5) {
+            leftVelocity = -5;
+            socket.emit('movepaddle', {game: game, l:leftVelocity});
+          }
           break;
         case 40: // DOWN
-          leftVelocity = 5;
+          if (leftVelocity !== 5) {
+            leftVelocity = 5;
+            socket.emit('movepaddle', {game: game, l:leftVelocity});
+          }
       }
     },
     'keyUp' : function(e) {
-      leftVelocity = 0;
-      console.log(leftPaddle);
-    },
-    'update' : function() {
-      if (leftVelocity < 0 && leftPaddle.y <= 0) {
-        leftVelocity = 0;
-      } else if (leftVelocity > 0 && leftPaddle.y + leftPaddle.height >= $('#gameCanvas').attr('height')) {
-        leftVelocity = 0;
+      if (e.which === 38 || e.which === 40) {
+        // console.log(e.which);
+        if (leftVelocity) {
+          leftVelocity = 0;
+          socket.emit('movepaddle', {game: game, l:leftVelocity});
+        }
       }
-      leftPaddle.y += leftVelocity;
+      // console.log(leftPaddle);
+    },
+    'update' : function(l, r, b) {
+      leftPaddle.y = l.y;
+      rightPaddle.y = r.y;
       stage.update();
     }
   };
@@ -85,8 +101,6 @@ function initialize(){
   $('#register').on('click', clickRegister);
   if ($('#authenticationButton').hasClass('alert')) {player = $('#authenticationButton').text();}
 
-  $('body').on('keydown', game.keyDown);
-  $('*').on('keyup', game.keyUp);
 }
 
 function clickAuth(e) {
@@ -148,8 +162,8 @@ function redirect() {
 }
 
 function submitGame(e){
-  var gameName = $('#newGameForm input[name=game]').val();
-  socket.emit('startgame', {game:gameName, player:player});
+  game = $('#newGameForm input[name=game]').val();
+  socket.emit('startgame', {game:game, player:player});
   e.preventDefault();
 }
 
@@ -160,11 +174,18 @@ function initializeSocketIO(){
   socket = io.connect(url);
   socket.on('connected', socketConnected);
 
+  //main draw function
+  socket.on('gameupdate', function(data){
+    game.update(data.l, data.r, data.b);
+  });
+
   //get our game obj
   var game = GameFactory();
   game.init('gameCanvas');
   //set up callbacks related to the game
   $('#startGame').on('click', submitGame);
+  $('body').on('keydown', game.keyDown);
+  $('body').on('keyup', game.keyUp);
 
   socket.on('playerjoined', socketPlayerJoined);
 
@@ -172,10 +193,13 @@ function initializeSocketIO(){
 
 
 function socketPlayerJoined(data) {
+  $('#newGameForm').addClass('hidden');
   if (data.players.length === 1) {
-    console.log('waiting on a second player');
+    $('#notice').removeClass('hidden').children('span').text('Waiting on second player...');
   } else {
-    console.log(data.players);
+    // console.log(data);
+    $('#notice').addClass('hidden');
+    $('#gameContainer').removeClass('hidden');
   }
 
 }
