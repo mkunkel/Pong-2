@@ -15,6 +15,7 @@ var GameFactory = function() {
   var stageHeight = 500;
   var paddleWidth = 25;
   var paddles = [];
+  var score = [0,0];
   var heights = [100, 100];
   var velocities = [0,0];
   var rightX = parseInt($('#gameCanvas').attr('width'), 10) - paddleWidth;
@@ -38,11 +39,17 @@ var GameFactory = function() {
       paddles[1] = new createjs.Shape();
       paddles[1].graphics.beginFill('blue').drawRect(rightX, 0, paddleWidth, heights[1]);
       paddles[0].y = paddles[1].y = 200;
+      console.log(paddles[0].y);
+      score[0] = new createjs.Text(0, '20px Arial', '#ff7700');
+      score[1] = new createjs.Text(0, '20px Arial', '#ff7700');
+      score[0].y = score[1].y = 50;
+      score[0].x = stageWidth / 5;
+      score[1].x = (stageWidth / 5) * 4;
       //Set position of Shape instance.
       ball.x = ball.y = 50;
       ball.radius = 10;
        //Add Shape instance to stage display list.
-      stage.addChild(ball, paddles[0], paddles[1]);
+      stage.addChild(ball, paddles[0], paddles[1], score[0], score[1]);
       stage.update();
     },
 
@@ -64,6 +71,7 @@ var GameFactory = function() {
       switch (e.which) {
         case 38: // UP
           if(velocities[player.index] !== -5) {
+            console.log('up');
             velocities[player.index] = -5;
             self.emitPaddles();
           }
@@ -86,30 +94,55 @@ var GameFactory = function() {
       // console.log(paddles[0]);
     },
     'emitPaddles' : function() {
-      var paddles = [];
+      var tempPaddles = [];
       var opponent = player.index === 0 ? 1 : 0;
-      paddles[player.index] = velocities[player.index];
-      paddles[opponent] = null;
-      socket.emit('movepaddle', {game: game, paddles: paddles});
+      tempPaddles[player.index] = velocities[player.index];
+      tempPaddles[opponent] = null;
+      socket.emit('movepaddle', {game: game, paddles: tempPaddles});
     },
     'stayInBounds': function(test, min, max) {
       return Math.min(Math.max(test, min), max);
     },
     'newBall' : function(x, y) {
+      console.log('newBall');
       ball.x = stageWidth / 2;
       ball.y = stageHeight / 2;
       ballVelocity.x = x;
       ballVelocity.y = y;
     },
-    'checkCollision' : function(ball, paddle, paddleHeight) {
+    'checkCollision' : function(ball, paddle, paddleHeight, index) {
       if(ball.y <= paddle.y + paddleHeight && ball.y >= paddle.y) {
-        console.log('hit');
+
         ballVelocity.x *= -1;
+        if(index === player.index){
+          // only submit to server if ball strikes the client's paddle
+          // will allow server to sync when the defending client changes
+          socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
+        }
+      }
+    },
+    'checkScore' : function() {
+      if(ball.x - ball.radius <= 0) {
+        socket.emit('score', {game:game, index: 0});
+        console.log('score left');
+      } else if(ball.x + ball.radius >= stageWidth) {
+        socket.emit('score', {game:game, index: 1});
+        console.log('score right');
       }
     },
     'updatePaddles' : function(paddles) {
       if(paddles[0] !== null) {velocities[0] = paddles[0];}
       if(paddles[1] !== null) {velocities[1] = paddles[1];}
+
+    },
+    'updateBall' : function(x, y, velocity) {
+      ball.x = x;
+      ball.y = y;
+      ballVelocity = velocity;
+    },
+    'updateScore' : function(newScore) {
+      score[0] = newScore[0];
+      score[1] = newScore[1];
     },
     'update' : function() {
 
@@ -122,10 +155,14 @@ var GameFactory = function() {
       if (ball.y <= ball.radius || ball.y >= stageHeight - ball.radius) {ballVelocity.y *= -1;}
       ball.x += ballVelocity.x;
       ball.y += ballVelocity.y;
-      if (ball.x - ball.radius <= paddleWidth) {self.checkCollision(ball, paddles[0], heights[0]);}
-      if (ball.x + ball.radius >= stageWidth - paddleWidth) {self.checkCollision(ball, paddles[1], heights[1]);}
+      if (ball.x - ball.radius <= paddleWidth) {self.checkCollision(ball, paddles[0], heights[0], 0);}
+      if (ball.x + ball.radius >= stageWidth - paddleWidth) {self.checkCollision(ball, paddles[1], heights[1], 1);}
+      self.checkScore();
+      // console.log(paddles[0].y + ' - ' + velocities[0]);
       paddles[0].y = self.stayInBounds(paddles[0].y + velocities[0], 0, stageHeight - heights[0]);
+      // debugger;
       paddles[1].y = self.stayInBounds(paddles[1].y + velocities[1], 0, stageHeight - heights[1]);
+
       // console.log(paddles[0].y);
       stage.update();
     }
@@ -228,8 +265,18 @@ function initializeSocketIO(){
   });
 
   socket.on('newball', function(data) {
-    console.log(data);
+    // console.log(data);
     game.newBall(data.x, data.y);
+  });
+
+  socket.on('updateball', function(data) {
+    // console.log(data);
+    game.updateBall(data.x, data.y, data.velocity);
+  });
+
+  socket.on('updatescore', function(data) {
+    // console.log(data);
+    game.updateScore(data.score);
   });
 
   //get our game obj
@@ -241,7 +288,7 @@ function initializeSocketIO(){
   $('body').on('keyup', game.keyUp);
 
   socket.on('playerjoined', function(data){
-    console.log(data);
+    // console.log(data);
     $('#newGameForm').addClass('hidden');
     if (data.players.length === 1) {
       $('#notice').removeClass('hidden').children('span').text('Waiting on second player...');

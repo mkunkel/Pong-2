@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
-var __ = require('lodash');
+// var __ = require('lodash');
 var uniqueValidator = require('mongoose-unique-validator');
 
-function randomize() {
-  return __.sample(__.range(10));
-}
+// function randomize() {
+//   return __.sample(__.range(10));
+// }
 
 var Player = mongoose.Schema({
   name:      {type: String, required: true, unique: true},
