@@ -15,7 +15,7 @@ exports.connection = function(socket){
   socket.on('movepaddle', socketMovePaddle);
   socket.on('ballstrike', socketBallStrike);
   socket.on('score', function(data) {
-    console.log('got score');
+    // console.log('got score');
     socketScore(data);
   });
 };
@@ -68,7 +68,7 @@ function socketMovePaddle(data) {
 }
 
 function socketScore(data) {
-  console.log('score');
+  // console.log('score');
   // toward determines which way the ball will spawn
   // ball should spawn away from the index passed in
   var toward = data.index === 0 ? 'right' : 'left';
@@ -91,8 +91,11 @@ function randomXy(toward) {
   } else if (toward ==='right') {
     plusOrMinus = 1;
   }
-  var x = Math.floor(Math.random()*2 +1) * plusOrMinus;
+  var x = Math.floor(Math.random()*2 + 1) * plusOrMinus;
+  x += 2 * plusOrMinus;
   plusOrMinus = Math.random() < 0.5 ? -1 : 1;
   var y = Math.floor(Math.random()*2 + 1) * plusOrMinus;
+  console.log(x);
+
   return {x:x, y:y};
 }

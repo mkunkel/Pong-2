@@ -109,11 +109,21 @@ var GameFactory = function() {
       ball.y = stageHeight / 2;
       ballVelocity.x = x;
       ballVelocity.y = y;
+      console.log(ballVelocity);
     },
-    'checkCollision' : function(ball, paddle, paddleHeight, index) {
+    'checkCollision' : function(ball, paddle, velocity, paddleHeight, index) {
       if(ball.y <= paddle.y + paddleHeight && ball.y >= paddle.y) {
 
         ballVelocity.x *= -1;
+        ballVelocity.x *= 1.3;
+        ballVelocity.y *= 1.3;
+        if(velocity > 0) {
+          ballVelocity.y += 2;
+          console.log('ball down');
+        } else if (velocity < 0) {
+          ballVelocity.y -= 2;
+          console.log('ball up');
+        }
         if(index === player.index){
           // only submit to server if ball strikes the client's paddle
           // will allow server to sync when the defending client changes
@@ -141,8 +151,9 @@ var GameFactory = function() {
       ballVelocity = velocity;
     },
     'updateScore' : function(newScore) {
-      score[0] = newScore[0];
-      score[1] = newScore[1];
+      console.log(newScore);
+      score[0].text = newScore[0];
+      score[1].text = newScore[1];
     },
     'update' : function() {
 
@@ -155,8 +166,8 @@ var GameFactory = function() {
       if (ball.y <= ball.radius || ball.y >= stageHeight - ball.radius) {ballVelocity.y *= -1;}
       ball.x += ballVelocity.x;
       ball.y += ballVelocity.y;
-      if (ball.x - ball.radius <= paddleWidth) {self.checkCollision(ball, paddles[0], heights[0], 0);}
-      if (ball.x + ball.radius >= stageWidth - paddleWidth) {self.checkCollision(ball, paddles[1], heights[1], 1);}
+      if (ball.x - ball.radius <= paddleWidth) {self.checkCollision(ball, paddles[0], velocities[0], heights[0], 0);}
+      if (ball.x + ball.radius >= stageWidth - paddleWidth) {self.checkCollision(ball, paddles[1], velocities[1], heights[1], 1);}
       self.checkScore();
       // console.log(paddles[0].y + ' - ' + velocities[0]);
       paddles[0].y = self.stayInBounds(paddles[0].y + velocities[0], 0, stageHeight - heights[0]);
