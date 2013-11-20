@@ -11,7 +11,7 @@ exports.connection = function(socket){
   socket.emit('connected', {status: 'connected'});
   socket.on('disconnect', socketDisconnect);
   socket.on('startgame', socketStartGame);
-
+  socket.on('startball', socketStartBall);
   socket.on('movepaddle', socketMovePaddle);
 };
 
@@ -34,12 +34,32 @@ function socketStartGame(data){
   ]);
 }
 
+function socketStartBall(data) {
+  console.log('socketStartBall');
+  var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+  if (data.toward === 'left') {
+    plusOrMinus = -1;
+  } else if (data.toward ==='right') {
+    plusOrMinus = 1;
+  }
+  var x = Math.floor(Math.random()*2 +1) * plusOrMinus;
+  plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+  var y = Math.floor(Math.random()*2 + 1) * plusOrMinus;
+  async.waterfall([
+    function(fn){m.findGame(data.game,fn);},
+    function(game,fn){m.emitBall(io.sockets,game, x, y,fn);}
+  ]);
+
+}
+
+
+
 function socketMovePaddle(data) {
   var storage = {};
   var socket = this;
   async.waterfall([
     function(fn){m.findGame(data.game,fn);},
-    function(game,fn){m.updatePaddles(game, data.l, data.r, fn);}
+    function(game,fn){m.updatePaddles(io.sockets, game, data.paddles, fn);}
   ]);
 }
 
