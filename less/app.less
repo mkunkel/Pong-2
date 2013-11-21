@@ -9,7 +9,7 @@ body{
 
   #gameCanvas {
     background-color: #444;
-    border: 10px solid #fff;
+    border: 10px solid #EEEEEE;
     margin-top: 30px;
   }
 }
@@ -30,4 +30,64 @@ body{
 }
 .hidden {
   display: none;
+}
+
+a.button, button.button, #authenticationButton.button {
+  background-color: #444444;
+  border-color: #666666;
+  border-radius: 6px;
+  &:focus, &:hover {
+    background-color: #777777;
+  }
+  &.alert {
+    background-color: #880000;
+  }
+}
+
+
+
+fieldset {
+  margin-top: 60px;
+  background-color: #555555;
+  border-radius: 6px;
+  legend {
+    background-color: #555555;
+    color: #DDDDDD;
+    border-radius: 6px;
+    padding: 4px;
+    border: 1px solid #DDDDDD;
+
+
+
+    font-size: 14px;
+  }
+  input[type=text], input[type=password] {
+    background-color: #777777;
+    color: #222222;
+    border-radius: 6px;
+    &:focus {
+      background-color: #999999;
+      border-color: #DDDDDD;
+    }
+  }
+  label {
+    color: #DDDDDD;
+  }
+  #err {
+    color: #DDDDDD;
+    text-shadow: 0 0 10px rgba(255,0,0,.8);
+  }
+}
+
+input::-webkit-input-placeholder {
+  color: #707070;
+}
+input::-moz-placeholder {
+  color: #707070;
+}
+input:-moz-placeholder {   /* Older versions of Firefox */
+  color: #707070;
+}
+input:-ms-input-placeholder {
+  color: #707070;
 }

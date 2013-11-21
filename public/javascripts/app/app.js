@@ -26,30 +26,37 @@ var GameFactory = function() {
   // debugger;
   //Create the game object to be initialized and returned
   var self = {
-    'init' : function(stageId) {
+    'init' : function(stageId, players) {
       //Create a stage by getting a reference to the canvas
       //Stage variable is in closure scope
       stage = new createjs.Stage(stageId);
 
       //Create a Shape DisplayObject.  Make it a method like start
       ball = new createjs.Shape();
-      ball.graphics.beginFill('red').drawCircle(0, 0, 10);
+      ball.graphics.beginFill('#EEEEEE').drawCircle(0, 0, 10);
       paddles[0] = new createjs.Shape();
-      paddles[0].graphics.beginFill('blue').drawRect(0, 0, paddleWidth, heights[0]);
+      paddles[0].graphics.beginFill('#EEEEEE').drawRect(0, 0, paddleWidth, heights[0]);
       paddles[1] = new createjs.Shape();
-      paddles[1].graphics.beginFill('blue').drawRect(rightX, 0, paddleWidth, heights[1]);
+      paddles[1].graphics.beginFill('#EEEEEE').drawRect(rightX, 0, paddleWidth, heights[1]);
       paddles[0].y = paddles[1].y = 200;
       console.log(paddles[0].y);
-      score[0] = new createjs.Text(0, '20px Arial', '#ff7700');
-      score[1] = new createjs.Text(0, '20px Arial', '#ff7700');
+      score[0] = new createjs.Text(0, 'bold 70px Arial', '#777777');
+      score[1] = new createjs.Text(0, 'bold 70px Arial', '#777777');
+      var player1 = new createjs.Text(players[0].name, 'bold 50px Arial', '#777777');
+      var player2 = new createjs.Text(players[1].name, 'bold 50px Arial', '#777777');
+      var player1Bounds = player1.getBounds();
+      var player2Bounds = player2.getBounds();
       score[0].y = score[1].y = 50;
+      player1.y = player2.y = 10;
       score[0].x = stageWidth / 5;
       score[1].x = (stageWidth / 5) * 4;
+      player1.x = (stageWidth / 5) - (player1Bounds.width / 2);
+      player2.x = ((stageWidth / 5) * 4) - (player2Bounds.width / 2);
       //Set position of Shape instance.
       ball.x = ball.y = 50;
       ball.radius = 10;
        //Add Shape instance to stage display list.
-      stage.addChild(ball, paddles[0], paddles[1], score[0], score[1]);
+      stage.addChild(paddles[0], paddles[1], score[0], score[1], player1, player2, ball);
       stage.update();
     },
 
@@ -59,7 +66,7 @@ var GameFactory = function() {
       // set score to zero, whatever else you need to do
       // Update stage will render next frame
       createjs.Ticker.addEventListener('tick', self.update);
-
+      createjs.Ticker.setFPS(40);
       // stage.update();
       socket.emit('startball', {game: game});
     }, //end of start()
@@ -173,7 +180,7 @@ var GameFactory = function() {
       paddles[0].y = self.stayInBounds(paddles[0].y + velocities[0], 0, stageHeight - heights[0]);
       // debugger;
       paddles[1].y = self.stayInBounds(paddles[1].y + velocities[1], 0, stageHeight - heights[1]);
-
+      console.log(createjs.Ticker.getMeasuredFPS());
       // console.log(paddles[0].y);
       stage.update();
     }
@@ -211,7 +218,7 @@ function clickAuth(e) {
 }
 
 function clickLogin(e) {
-  $('#err').text(' ');
+  $('#err').html('&nbsp;');
   var url = '/login';
   var data = $('#gameForm').serialize();
   console.log(data);
@@ -221,7 +228,7 @@ function clickLogin(e) {
 }
 
 function clickRegister(e) {
-  $('#err').text(' ');
+  $('#err').html('&nbsp;');
   var url = '/';
   var data = $('#gameForm').serialize();
   console.log(data);
@@ -292,7 +299,6 @@ function initializeSocketIO(){
 
   //get our game obj
   var game = GameFactory();
-  game.init('gameCanvas');
   //set up callbacks related to the game
   $('#startGame').on('click', submitGame);
   $('body').on('keydown', game.keyDown);
@@ -308,6 +314,7 @@ function initializeSocketIO(){
       player.index = _.findIndex(data.players, {'name': player.name});
       $('#notice').addClass('hidden');
       $('#gameContainer').removeClass('hidden');
+      game.init('gameCanvas', data.players);
       game.start();
     }
 

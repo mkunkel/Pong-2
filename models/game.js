@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var Game = mongoose.Schema({
-  name:         String,
+  name:         {type: String, required: true},
   players:      [{type: mongoose.Schema.Types.ObjectId, ref: 'Player'}],
   score:        [Number],
   createdAt:    {type: Date, default: Date.now}

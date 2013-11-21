@@ -1,13 +1,15 @@
-form#gameForm.hidden(action='/', method='POST')
-  fieldset
-    legend Login/Register
-    .row
-      mixin field(6, 'text', 'name', 'Name')
-      mixin field(6, 'password', 'password', 'Password')
-    .row
-      .small-6.columns
-        #err= ' '
-      .small-3.columns
-        button.radius.tiny.expand#login Log In
-      .small-3.small-offset-6.columns
-        button.radius.tiny.expand#register Register
+.row
+  .small-12.columns
+    form#gameForm.hidden(action='/', method='POST')
+      fieldset
+        legend Login/Register
+        .row
+          mixin field(6, 'text', 'name', 'Name')
+          mixin field(6, 'password', 'password', 'Password')
+        .row
+          .small-6.columns
+            #err &nbsp
+          .small-3.columns
+            button.button.radius.tiny.expand#login Log In
+          .small-3.columns
+            button.button.radius.tiny.expand#register Register
