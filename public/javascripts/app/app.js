@@ -39,7 +39,7 @@ var GameFactory = function() {
       paddles[1] = new createjs.Shape();
       paddles[1].graphics.beginFill('#EEEEEE').drawRect(rightX, 0, paddleWidth, heights[1]);
       paddles[0].y = paddles[1].y = 200;
-      console.log(paddles[0].y);
+      // console.log(paddles[0].y);
       score[0] = new createjs.Text(0, 'bold 70px Arial', '#777777');
       score[1] = new createjs.Text(0, 'bold 70px Arial', '#777777');
       var player1 = new createjs.Text(players[0].name, 'bold 50px Arial', '#777777');
@@ -78,7 +78,7 @@ var GameFactory = function() {
       switch (e.which) {
         case 38: // UP
           if(velocities[player.index] !== -5) {
-            console.log('up');
+            // console.log('up');
             velocities[player.index] = -5;
             self.emitPaddles();
           }
@@ -180,7 +180,7 @@ var GameFactory = function() {
       paddles[0].y = self.stayInBounds(paddles[0].y + velocities[0], 0, stageHeight - heights[0]);
       // debugger;
       paddles[1].y = self.stayInBounds(paddles[1].y + velocities[1], 0, stageHeight - heights[1]);
-      console.log(createjs.Ticker.getMeasuredFPS());
+      // console.log(createjs.Ticker.getMeasuredFPS());
       // console.log(paddles[0].y);
       stage.update();
     }
