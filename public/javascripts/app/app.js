@@ -142,11 +142,11 @@ var GameFactory = function() {
       if(!scored) {
         if(ball.x - ball.radius <= 0) {
           scored = true;
-          setTimeout(function(){scored = false;}, 1000);
+          setTimeout(function(){scored = false;}, 1200);
           socket.emit('score', {game:game, index: 1});
         } else if(ball.x + ball.radius >= stageWidth) {
           scored = true;
-          setTimeout(function(){scored = false;}, 1000);
+          setTimeout(function(){scored = false;}, 1200);
           socket.emit('score', {game:game, index: 0});
         }
       }
