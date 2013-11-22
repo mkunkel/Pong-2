@@ -131,22 +131,22 @@ var GameFactory = function() {
           ballVelocity.y -= 2;
           console.log('ball up');
         }
-        if(index === player.index){
+        // if(index === player.index){
           // only submit to server if ball strikes the client's paddle
           // will allow server to sync when the defending client changes
-          socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
-        }
+        socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
+        // }
       }
     },
     'checkScore' : function() {
       if(!scored) {
         if(ball.x - ball.radius <= 0) {
           scored = true;
-          setTimeout(function(){scored = false;}, 1200);
+          setTimeout(function(){scored = false;}, 2000);
           socket.emit('score', {game:game, index: 1});
         } else if(ball.x + ball.radius >= stageWidth) {
           scored = true;
-          setTimeout(function(){scored = false;}, 1200);
+          setTimeout(function(){scored = false;}, 2000);
           socket.emit('score', {game:game, index: 0});
         }
       }
