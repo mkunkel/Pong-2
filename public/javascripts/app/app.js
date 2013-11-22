@@ -20,7 +20,7 @@ var GameFactory = function() {
   var velocities = [0,0];
   var rightX = parseInt($('#gameCanvas').attr('width'), 10) - paddleWidth;
   var ballVelocity = {};
-
+  var scored = false;
 
   var ball = {};
   // debugger;
@@ -116,7 +116,7 @@ var GameFactory = function() {
       ball.y = stageHeight / 2;
       ballVelocity.x = x;
       ballVelocity.y = y;
-      console.log(ballVelocity);
+      scored = false;
     },
     'checkCollision' : function(ball, paddle, velocity, paddleHeight, index) {
       if(ball.y <= paddle.y + paddleHeight && ball.y >= paddle.y) {
@@ -139,12 +139,14 @@ var GameFactory = function() {
       }
     },
     'checkScore' : function() {
-      if(ball.x - ball.radius <= 0) {
-        socket.emit('score', {game:game, index: 0});
-        console.log('score left');
-      } else if(ball.x + ball.radius >= stageWidth) {
-        socket.emit('score', {game:game, index: 1});
-        console.log('score right');
+      if(!scored) {
+        if(ball.x - ball.radius <= 0) {
+          socket.emit('score', {game:game, index: 1});
+          scored = true;
+        } else if(ball.x + ball.radius >= stageWidth) {
+          socket.emit('score', {game:game, index: 0});
+          scored = true;
+        }
       }
     },
     'updatePaddles' : function(paddles) {
