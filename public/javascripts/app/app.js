@@ -116,8 +116,7 @@ var GameFactory = function() {
       ball.y = stageHeight / 2;
       ballVelocity.x = x;
       ballVelocity.y = y;
-      stage.update();
-      scored = false;
+
     },
     'checkCollision' : function(ball, paddle, velocity, paddleHeight, index) {
       if(ball.y <= paddle.y + paddleHeight && ball.y >= paddle.y) {
@@ -143,9 +142,11 @@ var GameFactory = function() {
       if(!scored) {
         if(ball.x - ball.radius <= 0) {
           scored = true;
+          setTimeout(function(){scored = false;}, 1000);
           socket.emit('score', {game:game, index: 1});
         } else if(ball.x + ball.radius >= stageWidth) {
           scored = true;
+          setTimeout(function(){scored = false;}, 1000);
           socket.emit('score', {game:game, index: 0});
         }
       }
