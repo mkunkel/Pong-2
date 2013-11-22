@@ -140,11 +140,11 @@ var GameFactory = function() {
     },
     'checkScore' : function() {
       if(!scored) {
-        if(ball.x - ball.radius <= 0) {
+        if(ball.x - ball.radius <= 0 && player.index === 0) {
           scored = true;
           setTimeout(function(){scored = false;}, 2000);
           socket.emit('score', {game:game, index: 1});
-        } else if(ball.x + ball.radius >= stageWidth) {
+        } else if(ball.x + ball.radius >= stageWidth && player.index === 1) {
           scored = true;
           setTimeout(function(){scored = false;}, 2000);
           socket.emit('score', {game:game, index: 0});
