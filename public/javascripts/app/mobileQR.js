@@ -9,6 +9,6 @@ function generateQR(userName) {
 }
 
 function injectQR(data) {
-  debugger;
+  // debugger;
 }
 
