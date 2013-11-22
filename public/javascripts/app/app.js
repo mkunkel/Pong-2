@@ -116,6 +116,7 @@ var GameFactory = function() {
       ball.y = stageHeight / 2;
       ballVelocity.x = x;
       ballVelocity.y = y;
+      stage.update();
       scored = false;
     },
     'checkCollision' : function(ball, paddle, velocity, paddleHeight, index) {
@@ -141,11 +142,11 @@ var GameFactory = function() {
     'checkScore' : function() {
       if(!scored) {
         if(ball.x - ball.radius <= 0) {
+          scored = true;
           socket.emit('score', {game:game, index: 1});
-          scored = true;
         } else if(ball.x + ball.radius >= stageWidth) {
-          socket.emit('score', {game:game, index: 0});
           scored = true;
+          socket.emit('score', {game:game, index: 0});
         }
       }
     },
