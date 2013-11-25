@@ -11,10 +11,10 @@ function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
-  $('#up').on('mousedown', function(){clickPaddleDirection(-5);});
-  $('#up').on('mouseup', function(){clickPaddleDirection(0);});
-  $('#down').on('mousedown', function(){clickPaddleDirection(5);});
-  $('#down').on('mouseup', function(){clickPaddleDirection(0);});
+  $('#up').on('touchstart', function(){clickPaddleDirection(-5);});
+  $('#up').on('touchend', function(){clickPaddleDirection(0);});
+  $('#down').on('touchstart', function(){clickPaddleDirection(5);});
+  $('#down').on('touchend', function(){clickPaddleDirection(0);});
 }
 
 function initializeSocketIO(){
