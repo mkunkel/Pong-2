@@ -67,7 +67,7 @@ function socketBallStrike(data) {
     function(fn){m.findGame(data.game,fn);},
     function(game,fn){storage.game=game;fn();},
     function(fn){m.updateBall(io.sockets, socket, storage.game, data.x, data.y, data.velocity,fn);},
-    function(fn){m.updateLatency(io.sockets, storage.game, fn);}
+    // function(fn){m.updateLatency(io.sockets, storage.game, fn);}
   ]);
 }
 
