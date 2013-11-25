@@ -132,11 +132,11 @@ var GameFactory = function() {
           ballVelocity.y -= 2;
           console.log('ball up');
         }
-        // if(index === player.index){
+        if(index === player.index){
           // only submit to server if ball strikes the client's paddle
           // will allow server to sync when the defending client changes
-        socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
-        // }
+          socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
+        }
       }
     },
     'checkScore' : function() {
@@ -170,10 +170,6 @@ var GameFactory = function() {
     'update' : function() {
 
 
-
-      // REMOVE THIS LINE WHEN MOVING TO TWO PLAYER ENVIRONMENT
-      // rightVelocity = leftVelocity;
-      // REMOVE THIS LINE WHEN MOVING TO TWO PLAYER ENVIRONMENT
       // console.log(ball.x);
       if (ball.y <= ball.radius || ball.y >= stageHeight - ball.radius) {ballVelocity.y *= -1;}
       ball.x += ballVelocity.x;
