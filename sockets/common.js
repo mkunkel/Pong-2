@@ -19,7 +19,7 @@ exports.connection = function(socket){
     // console.log('got score');
     socketScore(data);
   });
-  socket.on('phoneid', function(data){console.log('phoneid = ' + data.phoneid);});
+  socket.on('phoneid', function(data){console.log('phoneid = ' + data);});
 };
 
 function socketSaveLatency(data) {
