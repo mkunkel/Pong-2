@@ -19,8 +19,12 @@ exports.connection = function(socket){
     // console.log('got score');
     socketScore(data);
   });
-  socket.on('phoneid', function(data){console.log('phoneid = ' + data);});
+  socket.on('phoneid', socketPhoneId);
 };
+
+function socketPhoneId(data) {
+  console.log('phone received');
+}
 
 function socketSaveLatency(data) {
   console.log('socketSaveLatency');
