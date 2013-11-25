@@ -22,7 +22,7 @@ function initializeSocketIO(){
 
 }
 
-function playerJoined(data) {
+function socketPlayerJoined(data) {
   // receiving {game:game, players:game.players}
   game = data.game;
   player.index = _.findIndex(data.players, {'id': player.id});

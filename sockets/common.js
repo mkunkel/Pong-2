@@ -25,7 +25,7 @@ exports.connection = function(socket){
 
 function socketPhoneId(data) {
   var socket = this;
-
+  console.log(data.playerId);
   async.waterfall([
     function(fn){m.findPlayerById(data.playerId, fn);},
     function(player,fn){m.savePhoneSocket(player, data.phoneId, fn);}
