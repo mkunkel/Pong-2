@@ -34,7 +34,7 @@ exports.login = function(req, res){
           req.session.regenerate(function() {
             req.session.playerId = player.id;
             req.session.save(function() {
-              res.send({status: 'ok', name: name, playerId: playerId});
+              res.send({status: 'ok', name: name, playerId: player.id});
             });
           });
         } else {
