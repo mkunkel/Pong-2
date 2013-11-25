@@ -11,10 +11,10 @@ function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
-  $('#up').on('touchstart', function(){clickPaddleDirection(-5);});
-  $('#up').on('touchend', function(){clickPaddleDirection(0);});
-  $('#down').on('touchstart', function(){clickPaddleDirection(5);});
-  $('#down').on('touchend', function(){clickPaddleDirection(0);});
+  $('#up').on('touchstart', function(e){clickPaddleDirection(-5, e);});
+  $('#up').on('touchend', function(e){clickPaddleDirection(0, e);});
+  $('#down').on('touchstart', function(e){clickPaddleDirection(5, e);});
+  $('#down').on('touchend', function(e){clickPaddleDirection(0, e);});
 }
 
 function initializeSocketIO(){
@@ -26,12 +26,13 @@ function initializeSocketIO(){
 
 }
 
-function clickPaddleDirection(velocity) {
+function clickPaddleDirection(velocity, e) {
   var tempPaddles = [];
   var opponent = player.index === 0 ? 1 : 0;
   tempPaddles[player.index] = velocity;
   tempPaddles[opponent] = null;
   socket.emit('movepaddle', {game: game.name, paddles: tempPaddles});
+  e.preventDefault();
 }
 
 function socketPlayerJoined(data) {
