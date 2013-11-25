@@ -46,7 +46,8 @@ function socketPlayerJoined(data) {
   // receiving {game:game, players:game.players}
   console.log('playerjoined');
   game = data.game;
-  player.index = _.findIndex(data.players, {'id': player.id});
+  debugger;
+  player.index = _.findIndex(data.players, {'_id': player.id});
   // alert(player.index);
 }
 
