@@ -10,6 +10,7 @@ var game;
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
+  console.log('phone initialized');
 }
 
 function initializeSocketIO(){
