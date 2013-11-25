@@ -84,9 +84,6 @@ function socketBallStrike(data) {
 function socketMovePaddle(data) {
   var storage = {};
   var socket = this;
-  console.log('-------------------------------------------------------');
-  console.log(data);
-  console.log('-------------------------------------------------------');
 
   async.waterfall([
     function(fn){m.findGame(data.game,fn);},
