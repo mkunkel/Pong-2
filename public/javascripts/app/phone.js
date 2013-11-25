@@ -11,8 +11,10 @@ function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
-  $('#up').on('click', clickPaddleUp);
-  $('#down').on('click', clickPaddleDown);
+  $('#up').on('mousedown', function(){clickPaddleDirection(-5);});
+  $('#up').on('mouseup', function(){clickPaddleDirection(0);});
+  $('#down').on('mousedown', function(){clickPaddleDirection(5);});
+  $('#down').on('mouseup', function(){clickPaddleDirection(0);});
 }
 
 function initializeSocketIO(){
@@ -24,21 +26,11 @@ function initializeSocketIO(){
 
 }
 
-function clickPaddleUp() {
+function clickPaddleDirection(velocity) {
   var tempPaddles = [];
   var opponent = player.index === 0 ? 1 : 0;
-  tempPaddles[player.index] = -5;
+  tempPaddles[player.index] = velocity;
   tempPaddles[opponent] = null;
-  socket.emit('movepaddle', {game: game.name, paddles: tempPaddles});
-}
-
-function clickPaddleDown() {
-  var tempPaddles = [];
-  console.log(player.index);
-  var opponent = player.index === 0 ? 1 : 0;
-  tempPaddles[player.index] = 5;
-  tempPaddles[opponent] = null;
-  console.log(tempPaddles);
   socket.emit('movepaddle', {game: game.name, paddles: tempPaddles});
 }
 
@@ -46,7 +38,7 @@ function socketPlayerJoined(data) {
   // receiving {game:game, players:game.players}
   console.log('playerjoined');
   game = data.game;
-  debugger;
+  // debugger;
   player.index = _.findIndex(data.players, {'_id': player.id});
   // alert(player.index);
 }
