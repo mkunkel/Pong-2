@@ -13,6 +13,7 @@ exports.connection = function(socket){
   socket.on('startgame', socketStartGame);
   socket.on('startball', socketStartBall);
   socket.on('movepaddle', socketMovePaddle);
+  socket.on('phonemovepaddle', socketPhoneMovePaddle);
   socket.on('ballstrike', socketBallStrike);
   socket.on('updatelatency', socketSaveLatency);
   socket.on('score', function(data) {
@@ -84,6 +85,7 @@ function socketBallStrike(data) {
 function socketMovePaddle(data) {
   var storage = {};
   var socket = this;
+
   async.waterfall([
     function(fn){m.findGame(data.game,fn);},
     function(game,fn){m.updatePaddles(io.sockets, game, data.paddles, fn);}

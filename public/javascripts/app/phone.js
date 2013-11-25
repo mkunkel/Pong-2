@@ -18,6 +18,15 @@ function initializeSocketIO(){
   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
   socket = io.connect(url);
   socket.on('connected', socketConnected);
+  socket.on('playerjoined', socketPlayerJoined);
+
+}
+
+function playerJoined(data) {
+  // receiving {game:game, players:game.players}
+  game = data.game;
+  player.index = _.findIndex(data.players, {'id': player.id});
+  alert(player.index);
 }
 
 function socketConnected(data){
