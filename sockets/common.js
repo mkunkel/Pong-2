@@ -23,7 +23,12 @@ exports.connection = function(socket){
 };
 
 function socketPhoneId(data) {
-  console.log(data);
+  var socket = this;
+
+  async.waterfall([
+    function(fn){m.findPlayerById(data.playerId, fn);},
+    function(player,fn){m.savePhoneSocket(player, data.phoneId, fn);}
+  ]);
 }
 
 function socketSaveLatency(data) {
