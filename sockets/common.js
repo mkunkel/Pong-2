@@ -26,7 +26,7 @@ function socketSaveLatency(data) {
   var socket = this;
   async.waterfall([
     function(fn){m.findPlayerBySocket(socket, fn);},
-    function(player, fn){m.saveLatency(player, data.time, fn);}
+    function(player,fn){m.saveLatency(player, data.time, fn);}
   ]);
 }
 
