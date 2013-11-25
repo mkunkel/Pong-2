@@ -171,7 +171,7 @@ var GameFactory = function() {
 
 
       // console.log(ball.x);
-      if (ball.y <= ball.radius & ballVelocity.y < 0 || ball.y >= stageHeight - ball.radius && ballVelocity.y > 0) {ballVelocity.y *= -1;}
+      if (ball.y <= ball.radius && ballVelocity.y < 0 || ball.y >= stageHeight - ball.radius && ballVelocity.y > 0) {ballVelocity.y *= -1;}
       ball.x += ballVelocity.x;
       ball.y += ballVelocity.y;
       if (ball.x - ball.radius <= paddleWidth) {self.checkCollision(ball, paddles[0], velocities[0], heights[0], 0);}
