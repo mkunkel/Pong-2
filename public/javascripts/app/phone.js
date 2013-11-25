@@ -11,6 +11,7 @@ function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
+  $('html').on('touchstart', function(e){e.preventDefault();});
   $('#up').on('touchstart', function(e){clickPaddleDirection(-5, e);});
   $('#up').on('touchend', function(e){clickPaddleDirection(0, e);});
   $('#down').on('touchstart', function(e){clickPaddleDirection(5, e);});
