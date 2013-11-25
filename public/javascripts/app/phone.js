@@ -21,5 +21,5 @@ function initializeSocketIO(){
 
 function socketConnected(data){
   alert('connected');
-  socket.emit('phoneid', {phoneId: 'socket.socket.sessionid'});
+  socket.emit('phoneid', {phoneId: socket.socket.sessionid});
 }

@@ -23,7 +23,7 @@ exports.connection = function(socket){
 };
 
 function socketPhoneId(data) {
-  console.log('phone received');
+  console.log(data);
 }
 
 function socketSaveLatency(data) {
