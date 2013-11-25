@@ -16,6 +16,10 @@ function initialize(){
   $('#up').on('touchend', function(e){clickPaddleDirection(0, e);});
   $('#down').on('touchstart', function(e){clickPaddleDirection(5, e);});
   $('#down').on('touchend', function(e){clickPaddleDirection(0, e);});
+  gyro.startTracking(function(o) {
+    $('#x').text(o.x);// o.x, o.y, o.z for accelerometer
+    // o.alpha, o.beta, o.gamma for gyro
+  });
 }
 
 function initializeSocketIO(){
