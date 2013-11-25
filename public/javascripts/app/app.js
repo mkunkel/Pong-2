@@ -1,4 +1,5 @@
-/* global _, getValue, createjs, sendAjaxRequest, document, window, io */
+/* global _, getValue, createjs, sendAjaxRequest, setTimeout, document, window, io */
+
 
 
 
@@ -203,7 +204,6 @@ function initialize(){
   $('#login').on('click', clickLogin);
   $('#register').on('click', clickRegister);
   if ($('#authenticationButton').hasClass('alert')) {player.name = $('#authenticationButton').text();}
-
 }
 
 function clickAuth(e) {
@@ -299,6 +299,11 @@ function initializeSocketIO(){
   socket.on('updatescore', function(data) {
     // console.log(data);
     game.updateScore(data.score);
+  });
+
+  socket.on('updatelatency', function(data){
+    socket.emit('updatelatency', {time: data.time});
+    console.log('updatelatency');
   });
 
   //get our game obj

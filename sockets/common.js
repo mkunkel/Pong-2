@@ -14,11 +14,21 @@ exports.connection = function(socket){
   socket.on('startball', socketStartBall);
   socket.on('movepaddle', socketMovePaddle);
   socket.on('ballstrike', socketBallStrike);
+  socket.on('updatelatency', socketSaveLatency);
   socket.on('score', function(data) {
     // console.log('got score');
     socketScore(data);
   });
 };
+
+function socketSaveLatency(data) {
+  console.log('socketSaveLatency');
+  var socket = this;
+  async.waterfall([
+    function(fn){m.findPlayerBySocket(socket, fn);},
+    function(player, fn){m.saveLatency(player, data.time, fn);}
+  ]);
+}
 
 function socketStartGame(data){
   var storage = {};
@@ -51,10 +61,13 @@ function socketStartBall(data) {
 }
 
 function socketBallStrike(data) {
+  var storage = {};
   var socket = this;
   async.waterfall([
     function(fn){m.findGame(data.game,fn);},
-    function(game,fn){m.updateBall(io.sockets, socket, game, data.x, data.y, data.velocity,fn);}
+    function(game,fn){storage.game=game;fn();},
+    function(fn){m.updateBall(io.sockets, socket, storage.game, data.x, data.y, data.velocity,fn);},
+    function(fn){m.updateLatency(io.sockets, storage.game, fn);}
   ]);
 }
 
@@ -95,7 +108,7 @@ function randomXy(toward) {
   x += 2 * plusOrMinus;
   plusOrMinus = Math.random() < 0.5 ? -1 : 1;
   var y = Math.floor(Math.random()*2 + 1) * plusOrMinus;
-  console.log(x);
+  // console.log(x);
 
   return {x:x, y:y};
 }

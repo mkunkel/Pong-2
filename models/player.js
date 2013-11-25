@@ -11,6 +11,7 @@ var Player = mongoose.Schema({
   password:  {type: String, required: true},
   socketId:  String,
   phoneId:   String,
+  latency:   {type:Number, default: 0},
   createdAt: {type: Date, default: Date.now}
 });
 
