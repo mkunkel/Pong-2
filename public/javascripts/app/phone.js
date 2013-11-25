@@ -10,7 +10,6 @@ var game;
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
-  console.log('phone initialized');
 }
 
 function initializeSocketIO(){
@@ -23,6 +22,5 @@ function initializeSocketIO(){
 
 function socketConnected(data){
   console.log(data);
-  socket.emit('phoneid', {phoneId: socket});
+  socket.emit('phoneid', {phoneId: socket.socket.sessionid});
 }
-
