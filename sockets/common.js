@@ -13,7 +13,7 @@ exports.connection = function(socket){
   socket.on('startgame', socketStartGame);
   socket.on('startball', socketStartBall);
   socket.on('movepaddle', socketMovePaddle);
-  socket.on('phonemovepaddle', socketPhoneMovePaddle);
+  // socket.on('phonemovepaddle', socketPhoneMovePaddle);
   socket.on('ballstrike', socketBallStrike);
   socket.on('updatelatency', socketSaveLatency);
   socket.on('score', function(data) {
