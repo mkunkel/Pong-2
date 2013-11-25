@@ -35,8 +35,9 @@ function clickPaddleUp() {
 function clickPaddleDown() {
   var tempPaddles = [];
   var opponent = player.index === 0 ? 1 : 0;
-  tempPaddles[player.index] = -5;
+  tempPaddles[player.index] = 5;
   tempPaddles[opponent] = null;
+  console.log(tempPaddles);
   socket.emit('movepaddle', {game: game.name, paddles: tempPaddles});
 }
 
