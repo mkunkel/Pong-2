@@ -34,6 +34,7 @@ function clickPaddleUp() {
 
 function clickPaddleDown() {
   var tempPaddles = [];
+  console.log(player.index);
   var opponent = player.index === 0 ? 1 : 0;
   tempPaddles[player.index] = 5;
   tempPaddles[opponent] = null;
