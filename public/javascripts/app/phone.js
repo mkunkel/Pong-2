@@ -29,7 +29,7 @@ function clickPaddleUp() {
   var opponent = player.index === 0 ? 1 : 0;
   tempPaddles[player.index] = -5;
   tempPaddles[opponent] = null;
-  socket.emit('movepaddle', {game: game._id, paddles: tempPaddles});
+  socket.emit('movepaddle', {name: game.name, paddles: tempPaddles});
 }
 
 function clickPaddleDown() {
