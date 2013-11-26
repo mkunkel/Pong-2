@@ -68,10 +68,10 @@ function socketConnected(data){
     $('#x').text((o.x - zero.x).toFixed(2));
     $('#y').text((o.y - zero.y).toFixed(2));
     $('#z').text((o.z - zero.z).toFixed(2));
-    socket.emit('log', {point:'before initial', orientation: orientation});
+    // socket.emit('log', {point:'before initial', orientation: orientation});
     if (!orient) {orient = 'portrait';}
 
-    socket.emit('log', {point:'before orientation set', orientation: orient});
+    // socket.emit('log', {point:'before orientation set', orientation: orient});
     // set orientation
     if (orient === 'portrait' && o.y < 3.5) {
       orient = 'landscape';
@@ -81,7 +81,17 @@ function socketConnected(data){
       axis = 'z';
     }
 
-    socket.emit('log', {point:'after orientation set', orientation: orient});
+    if(o[axis] > 2 && paddleVelocity !== -5) {
+      $('#position').text('up');
+      paddleVelocity = -5;
+    } else if(o[axis] < -2 && paddleVelocity !== 5) {
+      $('#position').text('down');
+      paddleVelocity = 5;
+    } else {
+      $('#position').text('stop');
+      paddleVelocity = 0;
+    }
+    // socket.emit('log', {point:'after orientation set', orientation: orient});
     // if
     $('#orientation').text(orient);
     // o.x, o.y, o.z for accelerometer
