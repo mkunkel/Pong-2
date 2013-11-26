@@ -16,11 +16,17 @@ function initialize(){
   $('#up').on('touchend', function(e){clickPaddleDirection(0, e);});
   $('#down').on('touchstart', function(e){clickPaddleDirection(5, e);});
   $('#down').on('touchend', function(e){clickPaddleDirection(0, e);});
+  var orientation;
   gyro.startTracking(function(o) {
     $('#x').text(o.x.toFixed(2));
     $('#y').text(o.y.toFixed(2));
     $('#z').text(o.z.toFixed(2));
-    var orientation = o.y > 5 ? 'portrait' : 'landscape';
+    if (!orientation) {orientation = o.y > 5 ? 'portrait' : 'landscape';}
+    if (orientation === 'portrait' && o.y < 3.5) {
+      orientation = 'landscape';
+    } else if (orientation === 'landscape' && o.y > 9) {
+      orientation = 'portrait';
+    }
     $('#orientation').text(orientation);
     // o.x, o.y, o.z for accelerometer
     // o.alpha, o.beta, o.gamma for gyro
