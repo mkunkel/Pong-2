@@ -69,7 +69,7 @@ function socketConnected(data){
     $('#y').text((o.y - zero.y).toFixed(2));
     $('#z').text((o.z - zero.z).toFixed(2));
     socket.emit('log', {point:'before initial', orientation: orientation});
-    if (!orientation) {orientation = o.y > 5 ? 'portrait' : 'landscape';}
+    if (!orientation) {orientation = 'portrait';}
 
     socket.emit('log', {point:'before orientation set', orientation: orientation});
     // set orientation
