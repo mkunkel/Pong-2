@@ -10,6 +10,9 @@ body
     .small-12.columns
       a#down.button.expand(href='#', data-id= playerId) Down
   .row
+    .small-12.columns
+      a#calibrate.button.expand(href='#', data-id= playerId) Calibrate
+  .row
     .small-4.columns.x X
     .small-4.columns.y Y
     .small-4.columns.z Z
@@ -19,9 +22,6 @@ body
     .small-4.columns.z#z
   .row
     .small-12.columns#orientation
-  .row
-    .small-12.columns
-      a#calibrate.button.expand(href='#', data-id= playerId) Calibrate
 
 include scripts.jade
 </html>
