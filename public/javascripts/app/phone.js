@@ -87,7 +87,7 @@ function socketConnected(data){
     } else if(o[axis] < -2 && paddleVelocity !== 5) {
       $('#position').text('down');
       paddleVelocity = 5;
-    } else {
+    } else if (paddleVelocity !== 0) {
       $('#position').text('stop');
       paddleVelocity = 0;
     }
