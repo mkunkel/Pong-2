@@ -5,32 +5,51 @@ $(document).ready(initialize);
 var socket;
 var player = {};
 var game;
-
+var paddleVelocity;
+var orientation;
+var axis;
+var zero = {};
+zero.x = 0;
+zero.y = 0;
+zero.z = 0;
 
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
   $('html').on('touchstart', function(e){e.preventDefault();});
-  $('#up').on('touchstart', function(e){clickPaddleDirection(-5, e);});
-  $('#up').on('touchend', function(e){clickPaddleDirection(0, e);});
-  $('#down').on('touchstart', function(e){clickPaddleDirection(5, e);});
-  $('#down').on('touchend', function(e){clickPaddleDirection(0, e);});
-  var orientation;
+  $('#up').on('touchstart', function(e){changeVelocity(-5, e);});
+  $('#up').on('touchend', function(e){changeVelocity(0, e);});
+  $('#down').on('touchstart', function(e){changeVelocity(5, e);});
+  $('#down').on('touchend', function(e){changeVelocity(0, e);});
+  $('#calibrate').on('touchstart', calibrate);
   gyro.startTracking(function(o) {
-    $('#x').text(o.x.toFixed(2));
-    $('#y').text(o.y.toFixed(2));
-    $('#z').text(o.z.toFixed(2));
+    $('#x').text((o.x - zero.x).toFixed(2));
+    $('#y').text((o.y - zero.y).toFixed(2));
+    $('#z').text((o.z - zero.z).toFixed(2));
     if (!orientation) {orientation = o.y > 5 ? 'portrait' : 'landscape';}
+
+    // set orientation
     if (orientation === 'portrait' && o.y < 3.5) {
       orientation = 'landscape';
-    } else if (orientation === 'landscape' && o.y > 9) {
+      axis = 'x';
+    } else if (orientation === 'landscape' && o.y > 8.6) {
       orientation = 'portrait';
+      axis = 'z';
     }
+
+    // if
     $('#orientation').text(orientation);
     // o.x, o.y, o.z for accelerometer
     // o.alpha, o.beta, o.gamma for gyro
   });
+}
+
+function calibrate() {
+  var measurements = gyro.getOrientation();
+  zero.x = measurements.x;
+  zero.y = measurements.y;
+  zero.z = measurements.z;
 }
 
 function initializeSocketIO(){
@@ -42,7 +61,8 @@ function initializeSocketIO(){
 
 }
 
-function clickPaddleDirection(velocity, e) {
+function changeVelocity(velocity, e) {
+  paddleVelocity = velocity;
   var tempPaddles = [];
   var opponent = player.index === 0 ? 1 : 0;
   tempPaddles[player.index] = velocity;
