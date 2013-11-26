@@ -95,10 +95,10 @@ function socketConnected(data){
       if(o.y < -1 && paddleVelocity !== 5) {
         paddleVelocity = 5;
         changeVelocity(paddleVelocity);
-      } else if(o.y > 1 && paddleVelocity !== -5) {
+      } else if(o.y > 2 && paddleVelocity !== -5) {
         paddleVelocity = -5;
         changeVelocity(paddleVelocity);
-      } else if(o.y > -1 && o.y < 1 && paddleVelocity !== 0) {
+      } else if(o.y > -1 && o.y < 2 && paddleVelocity !== 0) {
         paddleVelocity = 0;
         changeVelocity(paddleVelocity);
       }
