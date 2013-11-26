@@ -73,7 +73,7 @@ function socketConnected(data){
 
     // socket.emit('log', {point:'before orientation set', orientation: orient});
     // set orientation
-    if (orient === 'portrait' && o.y < 3.5) {
+    if (orient === 'portrait' && o.y < 3.5 && o.z < 6) {
       orient = 'landscape';
       axis = 'x';
     } else if (orient === 'landscape' && o.y > 8.6) {
@@ -81,13 +81,13 @@ function socketConnected(data){
       axis = 'z';
     }
 
-    if(o[axis] > 2 && paddleVelocity !== -5) {
+    if(o[axis] > 2 && paddleVelocity !== -5 && $('#position').text() !== 'up') {
       $('#position').text('up');
       paddleVelocity = -5;
-    } else if(o[axis] < -2 && paddleVelocity !== 5) {
+    } else if(o[axis] < -2 && paddleVelocity !== 5 && $('#position').text() !== 'down') {
       $('#position').text('down');
       paddleVelocity = 5;
-    } else if (paddleVelocity !== 0) {
+    } else if (paddleVelocity !== 0 && $('#position').text() !== 'stop') {
       $('#position').text('stop');
       paddleVelocity = 0;
     }
