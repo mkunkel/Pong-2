@@ -21,6 +21,7 @@ exports.connection = function(socket){
     socketScore(data);
   });
   socket.on('phoneid', socketPhoneId);
+  socket.on('log', function(data){console.log(data);});
 };
 
 function socketPhoneId(data) {

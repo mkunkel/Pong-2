@@ -27,8 +27,10 @@ function initialize(){
     $('#x').text((o.x - zero.x).toFixed(2));
     $('#y').text((o.y - zero.y).toFixed(2));
     $('#z').text((o.z - zero.z).toFixed(2));
+    socket.emit('log', {point:'before initial', orientation: orientation});
     if (!orientation) {orientation = o.y > 5 ? 'portrait' : 'landscape';}
 
+    socket.emit('log', {point:'before orientation set', orientation: orientation});
     // set orientation
     if (orientation === 'portrait' && o.y < 3.5) {
       orientation = 'landscape';
@@ -38,6 +40,7 @@ function initialize(){
       axis = 'z';
     }
 
+    socket.emit('log', {point:'after orientation set', orientation: orientation});
     // if
     $('#orientation').text(orientation);
     // o.x, o.y, o.z for accelerometer
@@ -81,5 +84,6 @@ function socketPlayerJoined(data) {
 }
 
 function socketConnected(data){
+
   socket.emit('phoneid', {phoneId: socket.socket.sessionid, playerId: player.id});
 }
