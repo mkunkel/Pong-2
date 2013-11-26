@@ -92,13 +92,13 @@ function socketConnected(data){
     //   paddleVelocity = 0;
     // }
     if ($('input:checked').length) {
-      if(o.y < -1 && paddleVelocity !== 5) {
+      if(o.y < -3 && paddleVelocity !== 5) {
         paddleVelocity = 5;
         changeVelocity(paddleVelocity);
-      } else if(o.y > 2 && paddleVelocity !== -5) {
+      } else if(o.y > 3 && paddleVelocity !== -5) {
         paddleVelocity = -5;
         changeVelocity(paddleVelocity);
-      } else if(o.y > -1 && o.y < 2 && paddleVelocity !== 0) {
+      } else if(o.y > -3 && o.y < 3 && paddleVelocity !== 0) {
         paddleVelocity = 0;
         changeVelocity(paddleVelocity);
       }
