@@ -1,4 +1,4 @@
-/* global _, getValue, createjs, sendAjaxRequest, setTimeout, document, window, io */
+/* global _, gyro, getValue, createjs, sendAjaxRequest, setTimeout, document, window, io */
 
 $(document).ready(initialize);
 
@@ -17,9 +17,9 @@ function initialize(){
   $('#down').on('touchstart', function(e){clickPaddleDirection(5, e);});
   $('#down').on('touchend', function(e){clickPaddleDirection(0, e);});
   gyro.startTracking(function(o) {
-    $('#x').text(o.x);
-    $('#y').text(o.y);
-    $('#z').text(o.z);
+    $('#x').text(o.x.toFixed(2));
+    $('#y').text(o.y.toFixed(2));
+    $('#z').text(o.z.toFixed(2));
     // o.x, o.y, o.z for accelerometer
     // o.alpha, o.beta, o.gamma for gyro
   });
