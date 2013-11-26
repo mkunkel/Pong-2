@@ -20,7 +20,8 @@ function initialize(){
     $('#x').text(o.x.toFixed(2));
     $('#y').text(o.y.toFixed(2));
     $('#z').text(o.z.toFixed(2));
-    $('#orientation').text(gyro.getOrientation());
+    var orientation = o.y < 5 ? 'portrait' : 'landscape';
+    $('#orientation').text(orientation);
     // o.x, o.y, o.z for accelerometer
     // o.alpha, o.beta, o.gamma for gyro
   });
