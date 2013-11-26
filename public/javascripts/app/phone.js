@@ -69,27 +69,39 @@ function socketConnected(data){
     $('#y').text((o.y - zero.y).toFixed(2));
     $('#z').text((o.z - zero.z).toFixed(2));
     // socket.emit('log', {point:'before initial', orientation: orientation});
-    if (!orient) {orient = 'portrait';}
+    // if (!orient) {orient = 'portrait';}
 
     // socket.emit('log', {point:'before orientation set', orientation: orient});
     // set orientation
-    if (orient === 'portrait' && o.y < 3.5 && o.z < 6) {
-      orient = 'landscape';
-      axis = 'x';
-    } else if (orient === 'landscape' && o.y > 8.6) {
-      orient = 'portrait';
-      axis = 'z';
-    }
+    // if (orient === 'portrait' && o.y < 3.5 && o.z < 6) {
+    //   orient = 'landscape';
+    //   axis = 'x';
+    // } else if (orient === 'landscape' && o.y > 8.6) {
+    //   orient = 'portrait';
+    //   axis = 'z';
+    // }
 
-    if(o[axis] > 2 && paddleVelocity !== -5 && $('#position').text() !== 'up') {
-      $('#position').text('up');
-      paddleVelocity = -5;
-    } else if(o[axis] < -2 && paddleVelocity !== 5 && $('#position').text() !== 'down') {
-      $('#position').text('down');
-      paddleVelocity = 5;
-    } else if (paddleVelocity !== 0 && $('#position').text() !== 'stop') {
-      $('#position').text('stop');
-      paddleVelocity = 0;
+    // if(o[axis] > 2 && paddleVelocity !== -5 && $('#position').text() !== 'up') {
+    //   $('#position').text('up');
+    //   paddleVelocity = -5;
+    // } else if(o[axis] < -2 && paddleVelocity !== 5 && $('#position').text() !== 'down') {
+    //   $('#position').text('down');
+    //   paddleVelocity = 5;
+    // } else if (paddleVelocity !== 0 && $('#position').text() !== 'stop') {
+    //   $('#position').text('stop');
+    //   paddleVelocity = 0;
+    // }
+    if ($('input:checked').length) {
+      if(o.y < -1 && paddleVelocity !== 5) {
+        paddleVelocity = 5;
+        changeVelocity(paddleVelocity);
+      } else if(o.y > 1 && paddleVelocity !== -5) {
+        paddleVelocity = -5;
+        changeVelocity(paddleVelocity);
+      } else if(o.y > -1 && o.y < 1 && paddleVelocity !== 0) {
+        paddleVelocity = 0;
+        changeVelocity(paddleVelocity);
+      }
     }
     // socket.emit('log', {point:'after orientation set', orientation: orient});
     // if
