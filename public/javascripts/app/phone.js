@@ -17,7 +17,7 @@ function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
-  $('html:not(input)').on('touchstart', function(e){e.preventDefault();});
+  // $('html:not(input)').on('touchstart', function(e){e.preventDefault();});
   $('#up').on('touchstart', function(e){changeVelocity(-5, e);});
   $('#up').on('touchend', function(e){changeVelocity(0, e);});
   $('#down').on('touchstart', function(e){changeVelocity(5, e);});
