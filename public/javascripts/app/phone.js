@@ -6,7 +6,7 @@ var socket;
 var player = {};
 var game;
 var paddleVelocity;
-var orientation;
+var orient;
 var axis;
 var zero = {};
 zero.x = 0;
@@ -69,21 +69,21 @@ function socketConnected(data){
     $('#y').text((o.y - zero.y).toFixed(2));
     $('#z').text((o.z - zero.z).toFixed(2));
     socket.emit('log', {point:'before initial', orientation: orientation});
-    if (!orientation) {orientation = 'portrait';}
+    if (!orient) {orient = 'portrait';}
 
-    socket.emit('log', {point:'before orientation set', orientation: orientation});
+    socket.emit('log', {point:'before orientation set', orientation: orient});
     // set orientation
-    if (orientation === 'portrait' && o.y < 3.5) {
-      orientation = 'landscape';
+    if (orient === 'portrait' && o.y < 3.5) {
+      orient = 'landscape';
       axis = 'x';
-    } else if (orientation === 'landscape' && o.y > 8.6) {
-      orientation = 'portrait';
+    } else if (orient === 'landscape' && o.y > 8.6) {
+      orient = 'portrait';
       axis = 'z';
     }
 
-    socket.emit('log', {point:'after orientation set', orientation: orientation});
+    socket.emit('log', {point:'after orientation set', orientation: orient});
     // if
-    $('#orientation').text(orientation);
+    $('#orientation').text(orient);
     // o.x, o.y, o.z for accelerometer
     // o.alpha, o.beta, o.gamma for gyro
   });
