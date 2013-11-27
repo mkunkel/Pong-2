@@ -232,7 +232,7 @@ function clickRadio(e) {
       controls = 'custom';
       $('#phoneControls').addClass('hidden');
       $('#customControls').removeClass('hidden');
-      $('#upKey').addClass('config').text('Press key to set')
+      $('#upKey').addClass('config').text('Press key to set');
     },
     phone: function(){
       controls = 'phone';
