@@ -17,20 +17,11 @@ function initialize(){
   $(document).foundation();
   initializeSocketIO();
   player.id = $('#up').data('id');
-  $('html:not(input)').on('touchstart', function(e){e.preventDefault();});
+  // $('html:not(input)').on('touchstart', function(e){e.preventDefault();});
   $('#up').on('touchstart', function(e){changeVelocity(-5, e);});
   $('#up').on('touchend', function(e){changeVelocity(0, e);});
   $('#down').on('touchstart', function(e){changeVelocity(5, e);});
   $('#down').on('touchend', function(e){changeVelocity(0, e);});
-  $('#calibrate').on('touchstart', calibrate);
-
-}
-
-function calibrate() {
-  var measurements = gyro.getOrientation();
-  zero.x = measurements.x;
-  zero.y = measurements.y;
-  zero.z = measurements.z;
 }
 
 function initializeSocketIO(){
@@ -43,7 +34,7 @@ function initializeSocketIO(){
 }
 
 function changeVelocity(velocity, e) {
-  socket.emit('log', {e: e});
+  console.log(e);
   paddleVelocity = velocity;
   var tempPaddles = [];
   var opponent = player.index === 0 ? 1 : 0;
