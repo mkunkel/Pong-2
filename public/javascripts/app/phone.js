@@ -43,6 +43,7 @@ function initializeSocketIO(){
 }
 
 function changeVelocity(velocity, e) {
+  socket.emit('log', {e: e});
   paddleVelocity = velocity;
   var tempPaddles = [];
   var opponent = player.index === 0 ? 1 : 0;
