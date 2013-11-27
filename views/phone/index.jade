@@ -1,13 +1,13 @@
 !!!5
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en">        <!--<![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9 phone" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js phone" lang="en">        <!--<![endif]-->
 include ../template/head
 body.phone
   .row.phone
-    .small-12.columns
-      a#up.button.expand(href='#', data-id= playerId) Up
+    .small-12.columns.phone
+      a#up.button.expand.phone(href='#', data-id= playerId) Up
   .row.phone
-    .small-12.columns
-      a#down.button.expand(href='#', data-id= playerId) Down
+    .small-12.columns.phone
+      a#down.button.expand.phone(href='#', data-id= playerId) Down
 include scripts.jade
 </html>
