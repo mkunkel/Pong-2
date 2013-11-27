@@ -9,6 +9,9 @@ var socket;
 var player = {};
 var color;
 var game;
+var controls = 'arrows';
+var upKey = 38;
+var downKey = 40;
 
 var GameFactory = function() {
   var stage = {};
@@ -76,15 +79,28 @@ var GameFactory = function() {
     'keyDown' : function(e) {
       //handle your keypress here
 
+      if(!$('#options').hasClass('hidden') && $('input[type=radio]:checked').val() === 'custom') {
+        // user is setting custom keys
+        var key = String.fromCharCode(e.which);
+        if($('#upKey').hasClass('config')){
+          $('#downKey').text($('#upKey').text()).addClass('config');
+          $('#upKey').text(key).removeClass('config');
+          upKey = e.which;
+        } else if($('#downKey').hasClass('config')) {
+          $('#downKey').text(key).removeClass('config');
+          downKey = e.which;
+        }
+      }
+
       switch (e.which) {
-        case 38: // UP
+        case upKey: // UP
           if(velocities[player.index] !== -5) {
             // console.log('up');
             velocities[player.index] = -5;
             self.emitPaddles();
           }
           break;
-        case 40: // DOWN
+        case downKey: // DOWN
           if (velocities[player.index] !== 5) {
             velocities[player.index] = 5;
             self.emitPaddles();
@@ -92,7 +108,7 @@ var GameFactory = function() {
       }
     },
     'keyUp' : function(e) {
-      if (e.which === 38 || e.which === 40) {
+      if (e.which === upKey || e.which === downKey) {
         // console.log(e.which);
         if (velocities[player.index]) {
           velocities[player.index] = 0;
@@ -200,6 +216,32 @@ function initialize(){
   $('#login').on('click', clickLogin);
   $('#register').on('click', clickRegister);
   if ($('#authenticationButton').hasClass('alert')) {player.name = $('#authenticationButton').text();}
+  $('input[type=radio]').on('click', clickRadio);
+}
+
+function clickRadio(e) {
+  var methods = {
+    arrows : function(){
+      controls = 'arrows';
+      $('#phoneControls').addClass('hidden');
+      $('#customControls').addClass('hidden');
+      upKey = 38;
+      downKey = 40;
+    },
+    custom : function(){
+      controls = 'custom';
+      $('#phoneControls').addClass('hidden');
+      $('#customControls').removeClass('hidden');
+      $('#upKey').addClass('config').text('Press key to set')
+    },
+    phone: function(){
+      controls = 'phone';
+      $('#phoneControls').removeClass('hidden');
+      $('#customControls').addClass('hidden');
+    }
+  };
+
+  methods[$('input[type=radio]:checked').val()]();
 }
 
 function clickAuth(e) {
@@ -312,6 +354,7 @@ function initializeSocketIO(){
   socket.on('playerjoined', function(data){
     // console.log(data);
     $('#newGameForm').addClass('hidden');
+    $('#options').addClass('hidden');
     if (data.players.length === 1) {
       $('#notice').removeClass('hidden').children('span').text('Waiting on second player...');
     } else {

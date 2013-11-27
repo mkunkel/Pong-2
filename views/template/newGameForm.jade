@@ -11,6 +11,29 @@
           .small-12.columns
             #err= ' '
 
-.row
+.row#options
   .small-12.columns
-    img(src='http://qrickit.com/api/qr?d=http://54.200.60.66/phone/#{playerId}&qrsize=256')
+    fieldset
+      .row
+        .small-4.columns
+          input(type='radio', name='controls', value='arrows', checked)
+          Use Up/Down Arrow Keys
+          br
+          input(type='radio', name='controls', value='custom')
+          Customize Keys
+          br
+          input(type='radio', name='controls', value='phone')
+          Use Phone Controls
+          br
+
+        .small-8.columns
+          #phoneControls.hidden
+            img(src='http://qrickit.com/api/qr?d=http://54.200.60.66/phone/#{playerId}&qrsize=256')
+            br
+            span Scan the QR code with your phone
+          #customControls.hidden
+            span Up:
+            span#upKey
+            br
+            span Down:
+            span#downKey
