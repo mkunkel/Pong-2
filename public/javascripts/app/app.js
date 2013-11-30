@@ -152,7 +152,7 @@ var GameFactory = function() {
     },
     'checkCollision' : function(ball, paddle, velocity, paddleHeight, index) {
       // Check if the ball has hit a paddle
-      if(ball.y <= paddle.y + paddleHeight && ball.y >= paddle.y) {
+      if(ball.y - 5 <= paddle.y + paddleHeight && ball.y +5 >= paddle.y) {
         // Ball is above the bottom of the paddle and below the top
         if((index === 0 && ballVelocity.x <= 0) || (index === 1 && ballVelocity.x >= 0)) {
           // Check to make sure that ball velocity hasn't already been updated
