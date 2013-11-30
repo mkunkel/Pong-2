@@ -88,7 +88,7 @@ function socketMovePaddle(data) {
 
   async.waterfall([
     function(fn){m.findGame(data.game,fn);},
-    function(game,fn){m.updatePaddles(io.sockets, game, data.paddles, fn);}
+    function(game,fn){m.updatePaddles(io.sockets, game, data.paddles, data.locations, fn);}
   ]);
 }
 

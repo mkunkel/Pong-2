@@ -119,10 +119,13 @@ var GameFactory = function() {
     },
     'emitPaddles' : function() {
       var tempPaddles = [];
+      var locations = [];
       var opponent = player.index === 0 ? 1 : 0;
       tempPaddles[player.index] = velocities[player.index];
       tempPaddles[opponent] = null;
-      socket.emit('movepaddle', {game: game, paddles: tempPaddles});
+      locations[player.index] = paddles[player.index].y;
+      locations[opponent] = paddles[opponent].y;
+      socket.emit('movepaddle', {game: game, paddles: tempPaddles, locations: locations});
     },
     'stayInBounds': function(test, min, max) {
       return Math.min(Math.max(test, min), max);
@@ -169,10 +172,11 @@ var GameFactory = function() {
         }
       }
     },
-    'updatePaddles' : function(paddles) {
-      if(paddles[0] !== null) {velocities[0] = paddles[0];}
-      if(paddles[1] !== null) {velocities[1] = paddles[1];}
-
+    'updatePaddles' : function(newPaddles, locations) {
+      if(newPaddles[0] !== null) {velocities[0] = newPaddles[0];}
+      if(locations[0] !== null) {paddles[0].y = locations[0];}
+      if(newPaddles[1] !== null) {velocities[1] = newPaddles[1];}
+      if(locations[1] !== null) {paddles[1].y = locations[1];}
     },
     'updateBall' : function(x, y, velocity) {
       ball.x = x;
@@ -322,7 +326,7 @@ function initializeSocketIO(){
   });
 
   socket.on('updatepaddles', function(data){
-    game.updatePaddles(data.paddles);
+    game.updatePaddles(data.paddles, data.locations);
   });
 
   socket.on('newball', function(data) {
