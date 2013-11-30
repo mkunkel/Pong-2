@@ -174,9 +174,9 @@ var GameFactory = function() {
     },
     'updatePaddles' : function(newPaddles, locations) {
       if(newPaddles[0] !== null) {velocities[0] = newPaddles[0];}
-      if(locations[0] !== null) {paddles[0].y = locations[0];}
+      // if(locations[0] !== null) {paddles[0].y = locations[0];}
       if(newPaddles[1] !== null) {velocities[1] = newPaddles[1];}
-      if(locations[1] !== null) {paddles[1].y = locations[1];}
+      // if(locations[1] !== null) {paddles[1].y = locations[1];}
     },
     'updateBall' : function(x, y, velocity) {
       ball.x = x;
