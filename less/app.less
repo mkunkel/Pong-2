@@ -16,16 +16,17 @@ body{
 
 #notice {
   width: 50%;
-  height: 100px;
+  // height: 100px;
   margin: auto;
   margin-top: 40px;
+  padding: 15px 0 15px 0;
   background-color: #ccc;
   text-align: center;
   border-radius: 10px;
   font-size: 30px;
   span {
-    position: relative;
-    top: 35px;
+    color: #990000;
+    font-weight: bold;
   }
 }
 .hidden {
@@ -50,6 +51,7 @@ fieldset {
   margin-top: 60px;
   background-color: #555555;
   border-radius: 6px;
+  color: #DDDDDD;
   legend {
     background-color: #555555;
     color: #DDDDDD;
@@ -79,17 +81,21 @@ fieldset {
   }
 }
 
+input[type=radio] {
+  margin-right: 5px;
+}
+
 input::-webkit-input-placeholder {
-  color: #707070;
+  color: #757575;
 }
 input::-moz-placeholder {
-  color: #707070;
+  color: #757575;
 }
 input:-moz-placeholder {   /* Older versions of Firefox */
-  color: #707070;
+  color: #757575;
 }
 input:-ms-input-placeholder {
-  color: #707070;
+  color: #757575;
 }
 
 .x, .y, .z, #orientation {
@@ -109,12 +115,15 @@ input:-ms-input-placeholder {
 }
 
 #upKey, #downKey {
+  margin-left: 10px;
   &.config{
     color: red;
   }
 }
 
-// #calibrate {
-//   position: absolute;
-//   bottom: 20px;
-// }
+#phoneControls {
+  span {
+    position: relative;
+    top: 5px;
+  }
+}
