@@ -137,21 +137,22 @@ var GameFactory = function() {
     },
     'checkCollision' : function(ball, paddle, velocity, paddleHeight, index) {
       if(ball.y <= paddle.y + paddleHeight && ball.y >= paddle.y) {
-
-        ballVelocity.x *= -1;
-        ballVelocity.x *= 1.3;
-        ballVelocity.y *= 1.3;
-        if(velocity > 0) {
-          ballVelocity.y += 2;
-          console.log('ball down');
-        } else if (velocity < 0) {
-          ballVelocity.y -= 2;
-          console.log('ball up');
-        }
-        if(index === player.index){
-          // only submit to server if ball strikes the client's paddle
-          // will allow server to sync when the defending client changes
-          socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
+        if((index === 0 && ballVelocity.x <= 0) || (index === 1 && ballVelocity.x >= 0)) {
+          ballVelocity.x *= -1;
+          ballVelocity.x *= 1.3;
+          ballVelocity.y *= 1.3;
+          if(velocity > 0) {
+            ballVelocity.y += 2;
+            console.log('ball down');
+          } else if (velocity < 0) {
+            ballVelocity.y -= 2;
+            console.log('ball up');
+          }
+          if(index === player.index){
+            // only submit to server if ball strikes the client's paddle
+            // will allow server to sync when the defending client changes
+            socket.emit('ballstrike', {game:game, x:ball.x, y:ball.y, velocity:ballVelocity});
+          }
         }
       }
     },
