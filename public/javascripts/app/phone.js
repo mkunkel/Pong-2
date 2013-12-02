@@ -56,10 +56,10 @@ function socketPlayerJoined(data) {
 function socketConnected(data){
 
   socket.emit('phoneid', {phoneId: socket.socket.sessionid, playerId: player.id});
-  gyro.startTracking(function(o) {
-    $('#x').text((o.x - zero.x).toFixed(2));
-    $('#y').text((o.y - zero.y).toFixed(2));
-    $('#z').text((o.z - zero.z).toFixed(2));
+  // gyro.startTracking(function(o) {
+  //   $('#x').text((o.x - zero.x).toFixed(2));
+  //   $('#y').text((o.y - zero.y).toFixed(2));
+  //   $('#z').text((o.z - zero.z).toFixed(2));
     // socket.emit('log', {point:'before initial', orientation: orientation});
     // if (!orient) {orient = 'portrait';}
 
@@ -83,22 +83,22 @@ function socketConnected(data){
     //   $('#position').text('stop');
     //   paddleVelocity = 0;
     // }
-    if ($('input:checked').length) {
-      if(o.y < -3 && paddleVelocity !== 5) {
-        paddleVelocity = 5;
-        changeVelocity(paddleVelocity);
-      } else if(o.y > 3 && paddleVelocity !== -5) {
-        paddleVelocity = -5;
-        changeVelocity(paddleVelocity);
-      } else if(o.y > -3 && o.y < 3 && paddleVelocity !== 0) {
-        paddleVelocity = 0;
-        changeVelocity(paddleVelocity);
-      }
-    }
+  //   if ($('input:checked').length) {
+  //     if(o.y < -3 && paddleVelocity !== 5) {
+  //       paddleVelocity = 5;
+  //       changeVelocity(paddleVelocity);
+  //     } else if(o.y > 3 && paddleVelocity !== -5) {
+  //       paddleVelocity = -5;
+  //       changeVelocity(paddleVelocity);
+  //     } else if(o.y > -3 && o.y < 3 && paddleVelocity !== 0) {
+  //       paddleVelocity = 0;
+  //       changeVelocity(paddleVelocity);
+  //     }
+  //   }
     // socket.emit('log', {point:'after orientation set', orientation: orient});
     // if
-    $('#orientation').text(orient);
+  //   $('#orientation').text(orient);
     // o.x, o.y, o.z for accelerometer
     // o.alpha, o.beta, o.gamma for gyro
-  });
+  // });
 }
